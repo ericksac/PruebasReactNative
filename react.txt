@@ -1,0 +1,72 @@
+import * as React from 'react';
+import { WebView } from 'react-native-webview';
+import { StyleSheet, Alert, View, Button, TouchableOpacity, Text } from 'react-native';
+import Constants from 'expo-constants';
+
+const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+  <button id="btn">Test +1</button>
+   <button id="btn2">Testo</button>
+  
+  <script>
+    document.getElementById('btn').onclick = () => {
+      window.ReactNativeWebView.postMessage('msg from the webview');
+    }
+  </script>
+</body>
+</html>
+`
+
+const onMessage = (event) =>{
+  Alert.alert(event.nativeEvent.data);
+  Alert.alert("Uffa", "Si funciono")
+}
+
+function onBack() {
+     Alert.alert("a", "se pudo")
+  }
+
+function onNavigationStateChange(navState) {
+    this.setState({
+      canGoBack: navState.canGoBack
+    });
+  }
+export default function App() {
+  return (
+     <View style={styles.container}>
+        <View style={styles.topbar}>
+          <TouchableOpacity
+            onPress={onBack}
+            >
+            <Text style={styles.topbarText}>Go Back</Text>
+          </TouchableOpacity>
+        </View>
+      <WebView
+        style={styles.container}
+        source={{ uri: 'https://siampexterno.mp.gob.gt/sirviendoteconcalidad/#/evaluacion/534EB1C0-4073-4F20-9F8D-639DE36840CD' }}
+        onMessage={onMessage}
+      />
+      </View>
+  );
+  
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  topbar: {
+    marginTop: 40,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
